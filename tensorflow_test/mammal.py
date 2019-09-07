@@ -18,6 +18,7 @@ class Mammal:
              [0, 1] -> [0, 0, 1] 조류
         
         """
+        #학습 데이터
         x_data = np.array(
             [
              [0, 0],
@@ -28,7 +29,7 @@ class Mammal:
              [0, 1]
              ]
         )
-
+        # 학습 데이터 -> x에 대한 y값
         y_data = np.array(
             [
              [1, 0, 0],
@@ -51,12 +52,12 @@ class Mammal:
         # b는 각 레이어의 아웃풋 갯수로 설정함
         # b는 최종 결과값의 분류갯수인 3으로 설정함
 
-        L = tf.add(tf.matmul(X, W), b) # WX + b
+        L = tf.add(tf.matmul(X, W), b) # WX + b 한개의 뉴런
         #가중치와 편향을 이용해 계산한 결과 값에
-        L = tf.nn.relu(L) #인공망 추가 #활성화 함수 #nn인공 신경마 하나가 된다.
+        L = tf.nn.relu(L) #인공망 추가 #활성화 함수 #nn인공 신경마 하나가 된다. 뉴런의 망에 위의 데이터를 입력하는 것 -> 각각의 자리에 대입
         model = tf.nn.softmax(L) #추가하는 것
         """
-            softmax 소프트맥스 함수는 다음 처럼 결과값을 전체 합이 1인 확률로 만들어 주는 함수
+            softmax 소프트맥스 함수는 다음 처럼 결과값을 전체 합이 1인 확률로 만들어 주는 함수 // 가중치를 결정 하기 위한 것 // 임의로 조절 가능
             예) [8.04, 2.76, -6.52] -> [0.53, 0.24, 0.23] #스케일링
         """
 
@@ -72,12 +73,12 @@ class Mammal:
         sess.run(init)
         for step in range(100): #학습 시키는 횟수
             sess.run(train_op, {X: x_data, Y:y_data})
-            if(step + 1) % 10 == 10:
+            if(step + 1) % 10 == 0:
                 print(step + 1, sess.run(cost, {X : x_data, Y : y_data}))
 
         #결과 확인
-        prediction = tf.argmax(model, 1)
-        target = tf.arg_max(Y, 1)
+        prediction = tf.argmax(model, 1) #현재 모델
+        target = tf.argmax(Y, 1) # arg_max옛날 모델
         print('예측값', sess.run(prediction, {X: x_data}))
         print('실제값', sess.run(target, {Y: y_data}))
         # tf.argmax : 예측값과 실제값의 행렬에서 tf.argmax를 이용해 가장 큰 값을 가져옴
